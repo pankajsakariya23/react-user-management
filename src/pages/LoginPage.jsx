@@ -35,6 +35,7 @@ export default function LoginPage() {
           required
         />
         <button type="submit">Login</button>
+		<br/>Enter Email Sincere@april.biz to proceed!
       </form>
     </div>
   );
