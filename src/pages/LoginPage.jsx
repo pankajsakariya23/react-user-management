@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState('Sincere@april.biz');
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -35,7 +35,6 @@ export default function LoginPage() {
           required
         />
         <button type="submit">Login</button>
-		<br/>Enter Email Sincere@april.biz to proceed!
       </form>
     </div>
   );

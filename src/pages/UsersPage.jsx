@@ -70,24 +70,28 @@ const handleQuickView = async (user) => {
   return (
     <div>
       <h2>User Manager</h2>
+	  <h4>Add New User</h4>
       <UserForm onSubmit={handleSubmit} form={form} setForm={setForm} />
-	  
-	  <div style={{ marginBottom: "15px", display: "flex", gap: "10px" }}>
-<input
-  value={search}
-  onChange={(e) => setSearch(e.target.value)}
-  placeholder="Search name/email"
-/>
+	    <h4>Search</h4>
+<div style={{ marginBottom: "15px", display: "flex", gap: "10px" }}>
+  <input
+    type="text"
+    placeholder="Search name or email"
+    value={search}
+    onChange={(e) => setSearch(e.target.value)}
+    style={{ padding: "5px", width: "200px" }}
+  />
 
-<select
-  value={companyFilter}
-  onChange={(e) => setCompanyFilter(e.target.value)}
->
-  <option value="">All Companies</option>
-  <option value="Romaguera-Crona">Romaguera-Crona</option>
-  <option value="Deckow-Crist">Deckow-Crist</option>
-  {/* Add more static or fetched company options */}
-</select>
+  <select
+    value={companyFilter}
+    onChange={(e) => setCompanyFilter(e.target.value)}
+    style={{ padding: "5px" }}
+  >
+    <option value="All">All Companies</option>
+    {[...new Set(users.map(u => u.company?.name))].map((company, idx) => (
+      <option key={idx} value={company}>{company}</option>
+    ))}
+  </select>
 </div>
 
       <UserTable users={users} onEdit={handleEdit} onDelete={remove} onQuickView={handleQuickView} />

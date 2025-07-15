@@ -6,28 +6,11 @@ export const useUsers = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 5;
 const [search, setSearch] = useState('');
-const [companyFilter, setCompanyFilter] = useState('');
+const [companyFilter, setCompanyFilter] = useState('All');
 
-useEffect(() => {
-  const fetchUsers = async () => {
-    try {
-      let url = 'https://jsonplaceholder.typicode.com/users';
-
-      const params = [];
-      if (search) params.push(`search=${encodeURIComponent(search)}`);
-      if (companyFilter) params.push(`company=${encodeURIComponent(companyFilter)}`);
-      if (params.length) url += '?' + params.join('&');
-
-      const res = await fetch(url);
-      const data = await res.json();
-      setUsers(data);
-    } catch (err) {
-      console.error('Failed to fetch users:', err);
-    }
-  };
-
-  fetchUsers();
-}, [search, companyFilter]);
+  useEffect(() => {
+    userService.getUsers().then(setUsers);
+  }, []);
 
   const create = (user) => {
     userService.createUser(user).then((data) => {
@@ -53,7 +36,18 @@ useEffect(() => {
 
 
 
-const paginatedUsers = users.slice(
+let filteredUsers = users.filter(u => {
+  const matchesSearch =
+    u.name.toLowerCase().includes(search.toLowerCase()) ||
+    u.email.toLowerCase().includes(search.toLowerCase());
+
+  const matchesFilter =
+    companyFilter === 'All' || u.company?.name === companyFilter;
+
+  return matchesSearch && matchesFilter;
+});
+
+const paginatedUsers = filteredUsers.slice(
   (currentPage - 1) * usersPerPage,
   currentPage * usersPerPage
 );
